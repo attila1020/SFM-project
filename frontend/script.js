@@ -1,5 +1,5 @@
-const backendUrl = 'http://localhost:8081'; 
-const frontendUrl = 'http://localhost:8080'; 
+const backendUrl = 'http://localhost:8080'; 
+const frontendUrl = 'http://localhost:3000'; 
 // Fetch and display fuel sales by type
 fetch(`${backendUrl}/api/fuel-sales`)
     .then(response => response.json())
