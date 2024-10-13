@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gas Station Dashboard</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="verticalPadding">
+    <!-- Header Section -->
+    <div id="row1" class="">
+        <div class="col text-center">
+            <h1 id="heading1">Gas Station Dashboard</h1>
+        </div>
+    </div>
+
+    <!-- Main Container for Charts -->
+    <div class="container">
+        <div class="row">
+            
+            <div class="col-md col-sm-12 chart-container m-2">
+                <h4>Sales by Fuel Type</h4>
+                <canvas id="salesByFuelChart"></canvas>
+            </div>
+            
+            <div class="col-md col-sm-12 chart-container m-2">
+                <h4>Stock Levels by Terminal</h4>
+                <canvas id="stockLevelsChart"></canvas>
+            </div>
+            
+            <div class="col-md col-sm-12 chart-container m-2">
+                <h4>Top-Selling Products</h4>
+                <canvas id="topSellingProductsChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Second Row of Charts -->
+        <div class="row">
+           
+            <div class="col-md col-sm-12 chart-container m-2">
+                <h4>Boxed Items Inventory</h4>
+                <canvas id="boxedItemsInventoryChart"></canvas>
+            </div>
+            
+            <div class="col-md col-sm-12 chart-container m-2">
+                <h4>Average Purchase Size</h4>
+                <canvas id="avgPurchaseSizeChart"></canvas>
+            </div>
+           
+            <div class="col-md col-sm-12 chart-container m-2">
+                <h4>Sales by Time of Day</h4>
+                <canvas id="salesByTimeChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Third Row of Alerts/Performance -->
+        <div class="row">
+           
+            <div class="col-md col-sm-12 m-2">
+                <h4>Low Stock Alerts</h4>
+                <div class="alert alert-warning">
+                    <ul id="lowStockAlert"></ul>
+                </div>
+            </div>
+            
+            <div class="col-md col-sm-12 chart-container m-2">
+                <h4>Loyalty Program Performance</h4>
+                <canvas id="loyaltyProgramChart"></canvas>
+            </div>
+           
+            <div class="col-md col-sm-12 chart-container m-2">
+                <h4>Profit Margins by Product</h4>
+                <canvas id="profitMarginsChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="vertical-menu">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="modify.html">Modify data</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+        <a href="query.html">Query</a>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Custom JS -->
+    <script src="script.js"></script>
+</body>
+</html>
