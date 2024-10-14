@@ -39,3 +39,8 @@ Elíndít 3 docker containert (frontend, backend, mysql-db) ezekbe másolva az a
 
 ## Adatbázis struktúra:
 ![image](./frontend/datab.png)
+
+## Jövőbeli fejlesztési lehetőségek
+- Több benzinkút weboldalának együttes támogatása
+- Országos szinten való nyilvántartás
+- Több termék hozzáadása
