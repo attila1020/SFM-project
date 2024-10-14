@@ -1,7 +1,7 @@
 # SFM-project
 [GIthub](https://github.com/attila1020/SFM-project.git)
 [Trello](https://trello.com/b/gmqoL5Zn/project)
-## Tulajdonságok
+## Technológiák
 **Név:** GasStation Dashboard
 
 **Frontend:** HTML, CSS, Js NGINX-ben
