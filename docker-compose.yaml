@@ -1,22 +1,22 @@
 version: '3.8'
 
 services:
-  mysql-db:
-    image: mysql:8
-    container_name: mysql-db
-    environment:
-      MYSQL_ROOT_PASSWORD: secret
-      MYSQL_DATABASE: gasstation
-      MYSQL_USER: gasuser
-      MYSQL_PASSWORD: secret
-    ports:
-      - "3306:3306"
-    volumes:
-      - mysql_data:/var/lib/mysql
-      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
-      # - ./db/csv_data:/docker-entrypoint-initdb.d/csv_data
-    networks:
-      - app-network
+  # mysql-db:
+  #   image: mysql:8
+  #   container_name: mysql-db
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: secret
+  #     MYSQL_DATABASE: gasstation
+  #     MYSQL_USER: gasuser
+  #     MYSQL_PASSWORD: secret
+  #   ports:
+  #     - "3306:3306"
+  #   volumes:
+  #     - mysql_data:/var/lib/mysql
+  #     - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+  #     # - ./db/csv_data:/docker-entrypoint-initdb.d/csv_data
+  #   networks:
+  #     - app-network
 
   backend:
     build:
@@ -24,13 +24,13 @@ services:
       dockerfile: Dockerfile
     container_name: backend
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/gasstation
-      SPRING_DATASOURCE_USERNAME: gasuser
-      SPRING_DATASOURCE_PASSWORD: secret
+      SPRING_DATASOURCE_URL: jdbc:h2:mem:gasstation
+      SPRING_DATASOURCE_USERNAME: sa
+      SPRING_DATASOURCE_PASSWORD: password
     ports:
       - "8080:8080"
-    depends_on:
-      - mysql-db
+    # depends_on:
+    #   - mysql-db
     networks:
       - app-network
 
