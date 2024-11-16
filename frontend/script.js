@@ -1,6 +1,92 @@
 const backendUrl = 'http://localhost:8080'; 
 const frontendUrl = 'http://localhost:3000'; 
-// Fetch and display fuel sales by type
+
+//#region options
+    const ChartBaseOptions = {
+        responsive: true,
+        plugins: {
+            legend: {
+                display: true,
+                position: 'top',
+                labels: {
+                    color: '#ffffff', // White text
+                    font: {
+                        size: 14,
+                        family: 'Arial',
+                    },
+                },
+            },
+            title: {
+                display: true,
+                text: '', // Default title text, can be overridden
+                color: '#ffffff',
+                font: {
+                    size: 20,
+                    family: 'Arial',
+                    weight: 'bold',
+                },
+                padding: {
+                    top: 10,
+                    bottom: 30,
+                },
+            },
+            tooltip: {
+                backgroundColor: '#333333',
+                titleColor: '#ffffff',
+                bodyColor: '#ffffff',
+                borderColor: '#666666',
+                borderWidth: 1,
+            },
+        },
+        layout: {
+            padding: {
+                top: 20,
+                bottom: 20,
+                left: 10,
+                right: 10,
+            },
+        },
+        scales: {
+            x: {
+                grid: {
+                    color: '#3c3c3c',
+                    lineWidth: 1,
+                },
+                ticks: {
+                    color: '#ffffff',
+                    font: {
+                        size: 12,
+                        weight: 'bold',
+                    },
+                },
+            },
+            y: {
+                grid: {
+                    color: '#3c3c3c',
+                    lineWidth: 1,
+                },
+                ticks: {
+                    color: '#ffffff',
+                    font: {
+                        size: 12,
+                        weight: 'bold',
+                    },
+                },
+                title: {
+                    display: true,
+                    text: 'Value',
+                    color: '#ffffff',
+                    font: {
+                        size: 14,
+                        weight: 'bold',
+                    },
+                },
+            },
+        },
+    };
+//#endregion
+
+//#region dashboard
 fetch(`${backendUrl}/api/fuel-sales`)
     .then(response => response.json())
     .then(data => {
@@ -12,12 +98,38 @@ fetch(`${backendUrl}/api/fuel-sales`)
             type: 'bar',
             data: {
                 labels: fuelTypes,
-                datasets: [{
-                    label: 'Sales by Fuel Type',
-                    data: salesData,
-                    backgroundColor: ['#ff6384', '#36a2eb', '#cc65fe', '#ffce56', '#4bc0c0']
-                }]
-            }
+                datasets: [
+                    {
+                        label: 'Fuel Sales',
+                        data: salesData,
+                        backgroundColor: ['#ff6384', '#36a2eb', '#ffce56', '#4bc0c0', '#9966ff', '#ff9f40'],
+                        borderColor: '#ffffff',
+                        borderWidth: 1,
+                    },
+                ],
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        display: true,
+                    },
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Fuel Types',
+                        },
+                    },
+                    y: {
+                        max: 1000,
+                        title: {
+                            display: true,
+                            text: 'Liters',
+                        },
+                    },
+                },
+            },
         });
     })
     .catch(error => console.error('Error fetching fuel sales data:', error));
@@ -150,33 +262,33 @@ fetch(`${backendUrl}/api/loyalty-performance`)
     .then(response => response.json)
 
 
+//#endregion
+//#region Login page
 
-//Login page
-
-document.getElementById('loginForm').addEventListener('submit', async function(event) {
-    event.preventDefault();
+// document.getElementById('loginForm').addEventListener('submit', async function(event) {
+//     event.preventDefault();
     
-    const username = document.getElementById('userInput').value;
-    const password = document.getElementById('inputPassword').value;
+//     const username = document.getElementById('userInput').value;
+//     const password = document.getElementById('inputPassword').value;
 
-    const response = await fetch('/login', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        }, 
-        body: JSON.stringify({ username, password })
-    });
+//     const response = await fetch('/login', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json'
+//         }, 
+//         body: JSON.stringify({ username, password })
+//     });
 
-    const result = await response.json();
-    if (result.accountStatus === 'ok') {
-        window.location.href = 'dashboard.html';
-    } else {
-        alert('Invalid credentials');
-    }
-});
+//     const result = await response.json();
+//     if (result.accountStatus === 'ok') {
+//         window.location.href = 'dashboard.html';
+//     } else {
+//         alert('Invalid credentials');
+//     }
+// });
+//#endregion
 
-
-//query
+//#region query
 document.getElementById('sqlForm').addEventListener('submit', async function(event) {
     event.preventDefault();
     const query = document.getElementById('sqlQuery').value;
@@ -197,7 +309,7 @@ document.getElementById('sqlForm').addEventListener('submit', async function(eve
     }
 });
 
-//modify
+//#region modify
 
 async function fetchFuelData() {
 try {
