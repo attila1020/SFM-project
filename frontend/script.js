@@ -289,23 +289,58 @@ fetch(`${backendUrl}/api/loyalty-performance`)
 //#endregion
 
 //#region query
-document.getElementById('sqlForm').addEventListener('submit', async function(event) {
+document.getElementById('sqlForm').addEventListener('submit', async function (event) {
     event.preventDefault();
     const query = document.getElementById('sqlQuery').value;
 
-    const response = await fetch('/execute-sql', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
+     const response = await fetch('/execute-sql', {
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ query })
-    });
-
+         body: JSON.stringify({ query }),
+     });
+    //const response = await fetch('mockjson.json');
     const result = await response.json();
+    const resultDiv = document.getElementById('result');
+
     if (result.error) {
-        document.getElementById('result').innerHTML = `<div class="alert alert-danger">${result.error}</div>`;
+        resultDiv.innerHTML = `<div class="alert alert-danger">${result.error}</div>`;
     } else {
-        document.getElementById('result').innerHTML = `<pre>${JSON.stringify(result.data, null, 2)}</pre>`;
+        
+        resultDiv.innerHTML = '';
+
+       
+        const wrapper = document.createElement('div');
+        wrapper.classList.add('query-result-table-wrapper');
+
+        
+        const table = document.createElement('table');
+        table.classList.add('query-result-table'); 
+
+        
+        const headers = result.data[0];
+        const thead = table.createTHead();
+        const headerRow = thead.insertRow();
+        headers.forEach(header => {
+            const th = document.createElement('th');
+            th.textContent = header;
+            headerRow.appendChild(th);
+        });
+
+       
+        const tbody = table.createTBody();
+        result.data.slice(1).forEach(rowData => {
+            const row = tbody.insertRow();
+            rowData.forEach(cellData => {
+                const cell = row.insertCell();
+                cell.textContent = cellData;
+            });
+        });
+
+        wrapper.appendChild(table);
+
+        resultDiv.appendChild(wrapper);
     }
 });
 

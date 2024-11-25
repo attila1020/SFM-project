@@ -69,7 +69,12 @@ canvas {
 
 
 /*query*/
-
+.cente{
+    align-items: center;
+    text-align: center;
+    align-content: center;
+    align-self: center;
+}
 .asd{
     width: 35%;
     align-items: center;
@@ -79,6 +84,41 @@ canvas {
     border-radius: 10px;
 }
 
+.query-result-table-wrapper {
+    overflow: auto;
+    max-height: 800px;
+    max-width: 100%; 
+    border: 1px solid #ddd; 
+    background-color: #f9f9f9; 
+    display: inline-block;
+}
+
+.query-result-table {
+    background-color: rgb(71, 154, 187); 
+    color: white; 
+    width: auto; 
+    margin: 0; 
+    table-layout: auto; }
+
+.query-result-table th {
+    background-color: rgba(71, 154, 187, 0.85); 
+    border: 3px solid white; 
+    text-align: center; 
+    padding: 5px 8px 5px 8px;
+    white-space: nowrap; 
+}
+
+.query-result-table td {
+    border: 1px solid rgba(255, 255, 255, 0.8); 
+    text-align: center; 
+    padding: 2px 8px 2px 8px;
+    white-space: nowrap; 
+}
+
+.query-result-table th,
+.query-result-table td {
+    border-spacing: 0; /* Removes spacing between table cells */
+}
 
 /*modify*/
 .form-group {
