@@ -2,6 +2,7 @@ package hu.unideb.gasstation.api.controllers;
 
 import hu.unideb.gasstation.models.Fuel;
 import hu.unideb.gasstation.models.TopSelling;
+import hu.unideb.gasstation.models.LowStockAlert;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,6 +35,16 @@ public class GasController {
         return Arrays.asList(
                 new TopSelling("Engine Oil", 450),
                 new TopSelling("Coolant", 200)
+        );
+    }
+
+    @GetMapping("/low-stock")
+    public List<LowStockAlert> lowStockAlerts() {
+        // Hardcoded response for testing
+        return Arrays.asList(
+                new LowStockAlert("Wiper Fluid", 10),
+                new LowStockAlert("Antifreeze", 5),
+                new LowStockAlert("Brake Fluid", 3)
         );
 
     }
