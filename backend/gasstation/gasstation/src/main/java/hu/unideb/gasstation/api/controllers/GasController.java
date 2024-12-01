@@ -1,8 +1,6 @@
 package hu.unideb.gasstation.api.controllers;
 
-import hu.unideb.gasstation.models.Fuel;
-import hu.unideb.gasstation.models.TopSelling;
-import hu.unideb.gasstation.models.LowStockAlert;
+import hu.unideb.gasstation.models.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,10 +24,13 @@ public class GasController {
         );
     }
 
-//    @GetMapping("/stock-levels")
-//    public List<Stock> stockLevels() {
-//
-//    }
+    @GetMapping("/stock-levels")
+    public List<Terminal> stockLevels() {
+        return Arrays.asList(
+                new Terminal("Terminal 1", 1500),
+                new Terminal("Terminal 2", 1200)
+        );
+    }
     @GetMapping("/top-selling-products")
     public List<TopSelling> topSellingProducts() {
         return Arrays.asList(
@@ -47,5 +48,19 @@ public class GasController {
                 new LowStockAlert("Brake Fluid", 3)
         );
 
+    }
+
+    @GetMapping("/fetch-fuel-data")
+    public  List<FuelData> fetchFuelDate() {
+        return Arrays.asList(
+            new FuelData(1000, 1.5, 800, 1.3)
+        );
+    }
+
+    public List<BoxedItems> getBoxedItems() {
+        return Arrays.asList(
+                new BoxedItems("Wiper Fluid", 100),
+                new BoxedItems("Coolant", 80)
+        );
     }
 }
