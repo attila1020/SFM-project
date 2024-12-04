@@ -1,6 +1,5 @@
 package hu.unideb.gasstation.models;
 
-import java.util.Objects;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -8,7 +7,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "Avg")
-class Avg {
+public class Avg {
 
 	private @Id @GeneratedValue Long id;
 	private int gasoline;
@@ -19,10 +18,10 @@ class Avg {
 	private int antiFreeze;
 
 
-	Avg() {
+	public Avg() {
 	}
 
-	Avg(int gasoline, int diesel, int windowCleaner, int engineOil, int coolant, int antiFreeze) {
+	public Avg(int gasoline, int diesel, int windowCleaner, int engineOil, int coolant, int antiFreeze) {
 		this.gasoline = gasoline;
 		this.diesel = diesel;
 		this.windowCleaner = windowCleaner;
