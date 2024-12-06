@@ -25,6 +25,11 @@ public class PersonController {
         return personRepository.findById(id);
     }
 
+    @PostMapping("/person")
+    public Person addPerson(@RequestBody Person person) {
+        return personRepository.save(person);
+    }
+
     @PostMapping("/person/{id}")
     public boolean updatePerson(@PathVariable long id, @RequestBody Person person) {
         if (personRepository.findById(id).orElse(null) != null) {

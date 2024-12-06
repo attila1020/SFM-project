@@ -8,7 +8,7 @@ import jakarta.persistence.Id;
 @Entity
 public class BoxedItems {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     private long id;
     private String name;
     private int inventory;
@@ -35,5 +35,13 @@ public class BoxedItems {
 
     public void setInventory(int inventory) {
         this.inventory = inventory;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }

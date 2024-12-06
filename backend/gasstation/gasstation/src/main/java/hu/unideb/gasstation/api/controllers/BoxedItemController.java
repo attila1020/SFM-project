@@ -32,4 +32,9 @@ public class BoxedItemController {
     public BoxedItems addBoxedItem(@RequestBody BoxedItems boxedItem) {
         return boxedItemRepository.save(boxedItem);
     }
+
+    @DeleteMapping("/boxed/{id}")
+    public void deleteBoxedItemById(@PathVariable Long id) {
+        boxedItemRepository.deleteById(id);
+    }
 }
