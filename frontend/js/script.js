@@ -293,14 +293,14 @@ document.getElementById('sqlForm').addEventListener('submit', async function (ev
     event.preventDefault();
     const query = document.getElementById('sqlQuery').value;
 
-     const response = await fetch('/execute-sql', {
-         method: 'POST',
-         headers: {
-            'Content-Type': 'application/json',
-        },
-         body: JSON.stringify({ query }),
-     });
-    //const response = await fetch('mockjson.json');
+    //  const response = await fetch('/execute-sql', {
+    //      method: 'POST',
+    //      headers: {
+    //         'Content-Type': 'application/json',
+    //     },
+    //      body: JSON.stringify({ query }),
+    //  });
+    const response = await fetch('rsc/mockjson.json');
     const result = await response.json();
     const resultDiv = document.getElementById('result');
 

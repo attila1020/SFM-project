@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Person Management</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Link to Existing CSS -->
+    <link rel="stylesheet" href="../css/styles.css">
+
+    <style>
+        .button-row {
+            display: flex;
+            justify-content: space-between; /* Position buttons at opposite ends */
+            align-items: center;
+            margin: 20px 0; /* Add top and bottom spacing */
+        }
+
+        .table-container {
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body class="verticalPadding">
+
+    <!-- Header -->
+    <div id="row1">
+        <div class="col text-center">
+            <h1 id="heading1">Person Management</h1>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Buttons Row -->
+        <div class="button-row">
+            <button class="btn btn-primary" onclick="fetchPersons()">🔄 Load Data</button>
+            <button class="btn btn-success" onclick="window.location.href='add-update_person.html'">➕ Add Person</button>
+        </div>
+
+        <!-- Table -->
+        <div class="table-container">
+            <table class="query-result-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone Number</th>
+                        <th>Loyalty Points</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="person-table">
+                    <!-- Dynamic content will be inserted here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Vertical Menu -->
+    <div class="vertical-menu">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="modify.html">Modify Data</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+        <a href="query.html">Query</a>
+        <a href="accounts.html">Person Management </a>
+    </div>
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="../js/person.js"></script>
+</body>
+</html>
