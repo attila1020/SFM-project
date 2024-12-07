@@ -17,10 +17,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Initialize the Accounts Page
 function initializeAccountsPage() {
-  const loadButton = document.getElementById('loadDataButton');
-  const personTable = document.getElementById('personTableBody');
+  const personTable = document.getElementById('person-table');
+  const queryParams = new URLSearchParams(window.location.search);
+  const shouldReload = queryParams.get('reload'); // Check for the reload query parameter
 
-  // Attach event listener to load data
+  if (shouldReload) {
+    console.log('Reloading person data...');
+    loadPersonData(personTable); // Automatically load data when reload=true
+  }
+
+  // Add a listener for the manual load button if it exists
+  const loadButton = document.querySelector('.btn-primary[onclick="fetchPersons()"]');
   if (loadButton) {
     loadButton.addEventListener('click', () => loadPersonData(personTable));
   } else {
@@ -47,7 +54,10 @@ function loadPersonData(table) {
         ? data.map(personToRow).join('')
         : `<tr><td colspan="6" class="text-center">No persons found.</td></tr>`;
     })
-    .catch(error => console.error('Error fetching person data:', error));
+    .catch(error => {
+      console.error('Error fetching person data:', error);
+      table.innerHTML = `<tr><td colspan="6" class="text-center">Error loading data.</td></tr>`;
+    });
 }
 
 // Convert a person object to an HTML table row
@@ -60,8 +70,8 @@ function personToRow(person) {
       <td>${person.phoneNumber}</td>
       <td>${person.loyaltyPoints}</td>
       <td>
-        <button class="btn btn-primary btn-sm" onclick="redirectToUpdate(${person.id})">Edit</button>
-        <button class="btn btn-danger btn-sm" onclick="deletePerson(${person.id})">Delete</button>
+        <button class="btn btn-primary btn-sm" onclick="redirectToUpdate(${person.id})">✏️</button>
+        <button class="btn btn-danger btn-sm" onclick="deletePerson(${person.id})">🗑️</button>
       </td>
     </tr>`;
 }
@@ -81,7 +91,7 @@ function deletePerson(id) {
         throw new Error('Failed to delete person');
       }
       alert('Person deleted successfully!');
-      loadPersonData(document.getElementById('personTableBody')); // Reload the table
+      loadPersonData(document.getElementById('person-table')); // Reload the table
     })
     .catch(error => {
       console.error('Error deleting person:', error);
@@ -108,22 +118,20 @@ function initializeAddUpdatePersonPage() {
     });
   }
 
-  // Handle form submission for Add/Update
-  if (form) {
-    form.addEventListener('submit', event => {
-      event.preventDefault();
-      const personData = getFormData();
-      personId ? updatePerson(personId, personData) : addPerson(personData);
-    });
+  // If personId exists, populate the form for updating and change the heading
+  if (personId) {
+    heading.textContent = 'Update Person'; // Update the heading dynamically
+    populateFormForUpdate(personId); // Populate the form with person data
+  } else {
+    heading.textContent = 'Add Person'; // Default heading for adding
   }
 
-  // If personId exists, populate the form for updating
-  if (personId) {
-    heading.textContent = 'Update Person';
-    populateFormForUpdate(personId);
-  } else {
-    heading.textContent = 'Add Person';
-  }
+  // Handle form submission for Add/Update
+  form.addEventListener('submit', event => {
+    event.preventDefault(); // Prevent default form submission
+    const personData = getFormData(); // Collect form data
+    personId ? updatePerson(personId, personData) : addPerson(personData);
+  });
 }
 
 // Fetch person details and populate the form
@@ -135,16 +143,24 @@ function populateFormForUpdate(id) {
       }
       return response.json();
     })
-    .then(person => setFormData(person))
+    .then(person => {
+      document.getElementById('personId').value = person.id; // Set hidden ID
+      setFormData(person);
+    })
     .catch(error => console.error('Error fetching person details:', error));
 }
 
 // Set form data for editing
 function setFormData(person) {
-  document.getElementById('userInput').value = person.name;
-  document.getElementById('InputEmail1').value = person.email;
-  document.getElementById('inputphone').value = person.phoneNumber;
-  document.getElementById('inputponts').value = person.loyaltyPoints;
+  if (!person) {
+    console.error('No person data provided for setting form values.');
+    return;
+  }
+
+  document.getElementById('userInput').value = person.name || '';
+  document.getElementById('InputEmail1').value = person.email || '';
+  document.getElementById('inputphone').value = person.phoneNumber || '';
+  document.getElementById('InputPoints').value = person.loyaltyPoints || '';
 }
 
 // Get form data as an object
@@ -153,7 +169,7 @@ function getFormData() {
     name: document.getElementById('userInput').value,
     email: document.getElementById('InputEmail1').value,
     phoneNumber: document.getElementById('inputphone').value,
-    loyaltyPoints: document.getElementById('inputponts').value,
+    loyaltyPoints: document.getElementById('InputPoints').value,
   };
 }
 
@@ -168,8 +184,12 @@ function addPerson(personData) {
       if (!response.ok) {
         throw new Error('Failed to add person');
       }
+      return response.json(); 
+    })
+    .then(() => {
       alert('Person added successfully!');
-      window.location.href = 'accounts.html';
+      // Redirect to accounts page with reload=true
+      window.location.href = 'accounts.html?reload=true';
     })
     .catch(error => {
       console.error('Error adding person:', error);
@@ -180,7 +200,7 @@ function addPerson(personData) {
 // Update an existing person
 function updatePerson(id, personData) {
   fetch(`${backendUrl}/api/person/${id}`, {
-    method: 'PUT',
+    method: 'POST', 
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(personData),
   })
@@ -188,8 +208,11 @@ function updatePerson(id, personData) {
       if (!response.ok) {
         throw new Error('Failed to update person');
       }
+      return response.json(); 
+    })
+    .then(() => {
       alert('Person updated successfully!');
-      window.location.href = 'accounts.html';
+      window.location.href = 'accounts.html?reload=true';
     })
     .catch(error => {
       console.error('Error updating person:', error);
