@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 @Entity
 public class Person {
     @Id
+    @GeneratedValue
     private long id;
     private String name;
     private String email;
