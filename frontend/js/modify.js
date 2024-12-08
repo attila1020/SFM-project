@@ -11,7 +11,7 @@ async function fetchFuelData() {
 
         // Access the first element of the array
         if (data && data.length > 0) {
-            const fuelData = data[0]; // Get the first object from the array
+            const fuelData = data[data.length - 1]; // Get the first object from the array
 
             // Populate the form fields
             document.getElementById('gasolineAmount').value = fuelData.gasolineAmount || '';
