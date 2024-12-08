@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 
 @Entity
 public class BoxedItems {
+
     @Id
     @GeneratedValue
     private long id;
