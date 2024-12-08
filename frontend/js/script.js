@@ -138,24 +138,54 @@ fetch(`${backendUrl}/api/fuel-sales`)
 fetch(`${backendUrl}/api/stock-levels`)
     .then(response => response.json())
     .then(data => {
-        const terminals = data.map(item => item.terminal);
-        const stockLevels = data.map(item => item.stock);
+        // Extract terminal names and stock levels
+        const terminals = data.map(item => item.terminal); // ["Terminal 1", "Terminal 2"]
+        const stockLevels = data.map(item => item.stock); // [1500, 1200]
 
+        // Get canvas context for Chart.js
         const ctx2 = document.getElementById('stockLevelsChart').getContext('2d');
+
+        // Create a bar chart
         new Chart(ctx2, {
-            type: 'line',
+            type: 'bar',
             data: {
-                labels: terminals,
+                labels: terminals, // Terminal names for x-axis
                 datasets: [{
-                    label: 'Stock Levels by Terminal',
-                    data: stockLevels,
-                    borderColor: '#36a2eb',
-                    fill: false
+                    label: 'Stock Levels by Terminal', // Chart legend
+                    data: stockLevels, // Stock data for y-axis
+                    backgroundColor: terminals.map(() => `#${Math.floor(Math.random() * 16777215).toString(16)}`), // Random colors
+                    borderWidth: 1 // Border thickness for bars
                 }]
+            },
+            options: {
+                responsive: true, // Responsive chart
+                plugins: {
+                    legend: {
+                        display: true, // Show legend
+                        position: 'top' // Legend position
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true, // Start y-axis at 0
+                        title: {
+                            display: true,
+                            text: 'Stock Levels' // y-axis title
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Terminals' // x-axis title
+                        }
+                    }
+                }
             }
         });
     })
     .catch(error => console.error('Error fetching stock levels data:', error));
+
+
 
 // Fetch and display top-selling products
 fetch(`${backendUrl}/api/top-selling-products`)
@@ -180,47 +210,69 @@ fetch(`${backendUrl}/api/top-selling-products`)
     .catch(error => console.error('Error fetching top-selling products:', error));
 
 // Fetch and display boxed items inventory
-fetch(`${backendUrl}/api/boxed-items-inventory`)
+fetch(`${backendUrl}/api/boxed`)
     .then(response => response.json())
     .then(data => {
-        const items = data.map(item => item.name);
-        const inventoryData = data.map(item => item.inventory);
+        // Extract names and inventory data from the API response
+        const items = data.map(item => item.name); // ["Coolant", "Wiper Fluid"]
+        const inventoryData = data.map(item => item.inventory); // [80, 100]
 
+        // Generate random colors for each item
+        const randomColors = items.map(() => {
+            const randomColor = `#${Math.floor(Math.random()*16777215).toString(16)}`;
+            return randomColor;
+        });
+
+        // Create a bar chart using Chart.js
         const ctx4 = document.getElementById('boxedItemsInventoryChart').getContext('2d');
         new Chart(ctx4, {
             type: 'bar',
             data: {
-                labels: items,
+                labels: items, // Labels for the chart
                 datasets: [{
-                    label: 'Boxed Items Inventory',
-                    data: inventoryData,
-                    backgroundColor: ['#ff6384', '#36a2eb', '#ffce56', '#4bc0c0']
+                    label: 'Boxed Items Inventory', // Legend label
+                    data: inventoryData, // Inventory data
+                    backgroundColor: randomColors // Random colors for each bar
                 }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true // Ensure y-axis starts at 0
+                    }
+                }
             }
         });
     })
     .catch(error => console.error('Error fetching boxed items inventory data:', error));
 
+
+
 // Fetch and display average purchase size
-fetch(`${backendUrl}/api/average-purchase-size`)
+fetch(`${backendUrl}/api/averages`)
     .then(response => response.json())
     .then(data => {
-        const purchaseSizes = data.map(item => item.purchaseSize);
+        // Compute average purchase sizes
+        const purchaseSizes = data.map(item => 
+            (item.gasoline + item.diesel + item.windowCleaner + item.engineOil + item.coolant + item.antiFreeze)/6
+        );
 
         const ctx5 = document.getElementById('avgPurchaseSizeChart').getContext('2d');
         new Chart(ctx5, {
             type: 'bar',
             data: {
-                labels: ['Average Purchase Size'],
+                labels: purchaseSizes.map((_, index) => `Average ${index + 1}`),
                 datasets: [{
                     label: 'Average Purchase Size (Liters)',
-                    data: [purchaseSizes],
-                    backgroundColor: ['#ff6384']
+                    data: purchaseSizes,
+                    backgroundColor: '#ff6384'
                 }]
             }
         });
     })
     .catch(error => console.error('Error fetching average purchase size data:', error));
+
 
 // Fetch and display sales by time of day
 fetch(`${backendUrl}/api/sales-by-hour`)
@@ -344,54 +396,3 @@ document.getElementById('sqlForm').addEventListener('submit', async function (ev
     }
 });
 
-//#region modify
-
-async function fetchFuelData() {
-try {
-    const response = await fetch('/fetch-fuel-data');
-    const data = await response.json();
-
-    // Update the form fields with the fetched data
-    document.getElementById('gasolineAmount').value = data.gasolineAmount;
-    document.getElementById('gasolinePrice').value = data.gasolinePrice;
-    document.getElementById('dieselAmount').value = data.dieselAmount;
-    document.getElementById('dieselPrice').value = data.dieselPrice;
-
-} catch (error) {
-    document.getElementById('result').innerHTML = `<div class="alert alert-danger">Failed to fetch fuel data.</div>`;
-}
-}
-
-// Fetch fuel data when the page loads
-document.addEventListener('DOMContentLoaded', fetchFuelData);
-
-document.getElementById('modifyFuelForm').addEventListener('submit', async function(event) {
-event.preventDefault();
-
-// Get the values for gasoline and diesel
-const gasolineAmount = document.getElementById('gasolineAmount').value;
-const gasolinePrice = document.getElementById('gasolinePrice').value;
-const dieselAmount = document.getElementById('dieselAmount').value;
-const dieselPrice = document.getElementById('dieselPrice').value;
-
-// Send data to the server
-const response = await fetch('/modify-fuel', {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-        gasolineAmount,
-        gasolinePrice,
-        dieselAmount,
-        dieselPrice
-    })
-});
-
-const result = await response.json();
-if (result.success) {
-    document.getElementById('result').innerHTML = `<div class="alert alert-success">Fuel data updated successfully!</div>`;
-} else {
-    document.getElementById('result').innerHTML = `<div class="alert alert-danger">${result.error}</div>`;
-}
-});

@@ -159,7 +159,7 @@ function setFormData(person) {
 
   document.getElementById('userInput').value = person.name || '';
   document.getElementById('InputEmail1').value = person.email || '';
-  document.getElementById('inputphone').value = person.phoneNumber || '';
+  document.getElementById('tel').value = person.phoneNumber || '';
   document.getElementById('InputPoints').value = person.loyaltyPoints || '';
 }
 
@@ -168,7 +168,7 @@ function getFormData() {
   return {
     name: document.getElementById('userInput').value,
     email: document.getElementById('InputEmail1').value,
-    phoneNumber: document.getElementById('inputphone').value,
+    phoneNumber: document.getElementById('tel').value,
     loyaltyPoints: document.getElementById('InputPoints').value,
   };
 }
