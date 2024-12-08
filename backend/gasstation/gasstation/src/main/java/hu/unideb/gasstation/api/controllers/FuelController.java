@@ -31,20 +31,22 @@ public class FuelController {
         fuelDataRepository.save(fuelData);
     }
 
+    public int returnSale(List<Fuel> array) {
+        Fuel firstEntity = array.get(array.size()-1);
+        Fuel secondEntity = array.get(array.size()-2);
+
+        return firstEntity.getSales() - secondEntity.getSales();
+    }
+
     @GetMapping("/fuel-sales")
     public List<Fuel> fuelSales(){
 
         List<Fuel> gasSales = fuelRepository.findByFuelType("Gasoline");
         List<Fuel> dieselSales = fuelRepository.findByFuelType("Diesel");
 
-        Fuel firstGas = gasSales.get(gasSales.size()-1);
-        Fuel firstDiesel = dieselSales.get(dieselSales.size()-1);
 
-        Fuel secondGas = gasSales.get(gasSales.size()-2);
-        Fuel secondDiesel = dieselSales.get(dieselSales.size()-2);
-
-        Fuel gasSale = new Fuel("Gasoline", firstGas.getSales()-secondGas.getSales());
-        Fuel dieselSale = new Fuel("Diesel", firstDiesel.getSales()-secondDiesel.getSales());
+        Fuel gasSale = new Fuel("Gasoline", returnSale(gasSales));
+        Fuel dieselSale = new Fuel("Diesel", returnSale(dieselSales));
 
         return Arrays.asList(
                 gasSale, dieselSale
