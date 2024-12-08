@@ -1,6 +1,9 @@
 package hu.unideb.gasstation.api.controllers;
 
 import hu.unideb.gasstation.models.*;
+import hu.unideb.gasstation.repositories.TerminalRepository;
+import hu.unideb.gasstation.repositories.TopSellingRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,23 +15,20 @@ import java.util.List;
 @RequestMapping("/api")
 public class GasController {
 
-    @GetMapping("/fuel-sales")
-    public List<Fuel> fuelSales(){
+    @Autowired
+    TerminalRepository terminalRepository;
 
-        // Create business logic to get sales
-        // ARGS: fuelType:String, currentStock:int, lastStock:int
-        // RETURN: FuelType, currentStock - lastStock as a Array/List
-        return Arrays.asList(
-                new Fuel("Gasoline", 500),
-                new Fuel("Diesel", 300)
-        );
-    }
+    @Autowired
+    TopSellingRepository topSellingRepository;
 
     @GetMapping("/stock-levels")
     public List<Terminal> stockLevels() {
+
+        List<Terminal> firstTerminalStock = terminalRepository.findByTerminal("Terminal 1");
+        List<Terminal> secondTerminalStock = terminalRepository.findByTerminal("Terminal 2");
+
         return Arrays.asList(
-                new Terminal("Terminal 1", 1500),
-                new Terminal("Terminal 2", 1200)
+                firstTerminalStock.get(firstTerminalStock.size()-1), secondTerminalStock.get(firstTerminalStock.size()-1)
         );
     }
     @GetMapping("/top-selling-products")
@@ -50,17 +50,5 @@ public class GasController {
 
     }
 
-    @GetMapping("/fetch-fuel-data")
-    public  List<FuelData> fetchFuelDate() {
-        return Arrays.asList(
-            new FuelData(1000, 1.5, 800, 1.3)
-        );
-    }
 
-    public List<BoxedItems> getBoxedItems() {
-        return Arrays.asList(
-                new BoxedItems("Wiper Fluid", 100),
-                new BoxedItems("Coolant", 80)
-        );
-    }
 }
